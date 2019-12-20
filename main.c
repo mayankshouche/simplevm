@@ -46,12 +46,12 @@ int main(int argc, char* argv[])
 				break;
 
 			case 1:
-				print("loadi r%d #%d\n", reg1, immediate);
+				printf("loadi r%d #%d\n", reg1, immediate);
 				regs[reg1] = immediate;
 				break;
 
 			case 2:
-				print("add r%d r%d r%d\n", reg1, reg2, reg3);
+				printf("add r%d r%d r%d\n", reg1, reg2, reg3);
 				regs[reg1] = regs[reg2] + regs[reg3];
 				break;
 		}
