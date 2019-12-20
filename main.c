@@ -14,7 +14,7 @@
 #define NUM_REGS 4
 #define READ_SZ 255
 
-unsigned int regs[NUM_REGS];
+unsigned int regs[NUM_REGS] = {0};
 int pc = 0;
 unsigned int program[] = {0x1064, 0x11C8, 0x2201, 0x0000};
 unsigned int* memory;
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
 			case 3:
 				printf("addi r%d r%d #%d\n", reg1, reg2, immediateHalf);
-				regs[reg2] = regs[reg1] + immediateHalf;
+				regs[reg1] = regs[reg2] + immediateHalf;
 				break;
 		}
 		showRegs();
