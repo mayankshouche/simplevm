@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 				break;
 
 			case 2:
-				print("add r%d r%d r%d", reg1, reg2, reg3);
+				print("add r%d r%d r%d\n", reg1, reg2, reg3);
 				regs[reg1] = regs[reg2] + regs[reg3];
 				break;
 		}
