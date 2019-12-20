@@ -17,12 +17,14 @@
 unsigned int regs[NUM_REGS];
 int pc = 0;
 unsigned int program[] = {0x1064, 0x11C8, 0x2201, 0x0000};
+unsigned int* memory;
 
 int opcode = 0;
 int reg1 = 0;
 int reg2 = 0;
 int reg3 = 0;
-int immediate = 0;
+int immediateFull = 0;
+int immediateHalf = 0;
 
 bool status = true; //VM runs until status flag turns to zero
 
@@ -46,13 +48,18 @@ int main(int argc, char* argv[])
 				break;
 
 			case 1:
-				printf("loadi r%d #%d\n", reg1, immediate);
-				regs[reg1] = immediate;
+				printf("loadi r%d #%d\n", reg1, immediateFull);
+				regs[reg1] = immediateFull;
 				break;
 
 			case 2:
 				printf("add r%d r%d r%d\n", reg1, reg2, reg3);
 				regs[reg1] = regs[reg2] + regs[reg3];
+				break;
+
+			case 3:
+				printf("addi r%d r%d #%d\n", reg1, reg2, immediateHalf);
+				regs[reg2] = regs[reg1] + immediateHalf;
 				break;
 		}
 		showRegs();
@@ -86,7 +93,8 @@ void decodeInstruction(int instruction)
 	reg1 = (instruction & 0x0F00) >> 8;     //second byte
 	reg2 = (instruction & 0x00F0) >> 4;     //third byte
 	reg3 = (instruction & 0x000F);			//fourth...
-	immediate = (instruction & 0x00FF);		//lower half
+	immediateFull = (instruction & 0x00FF);	//lower half
+	immediateHalf = (instruction & 0x000F); //LSB
 }
 
 void showRegs(void)
