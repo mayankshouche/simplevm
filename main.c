@@ -16,7 +16,7 @@
 
 unsigned int regs[NUM_REGS] = {0};
 int pc = 0;
-unsigned int program[] = {0x1064, 0x11C8, 0x2201, 0x0000};
+unsigned int* program = {0x1064, 0x11C8, 0x2201, 0x0000};
 unsigned int* memory;
 
 int opcode = 0;
@@ -77,7 +77,7 @@ void getProgram(char* filename, unsigned int* program)
 {
 	FILE* fp;
 	fp = fopen(filename, "r");
-	char* buffer[READ_SZ];
+	char buffer[READ_SZ];
 	int index = 0;
 
 	while (fgets(buffer, READ_SZ, fp))
