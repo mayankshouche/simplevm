@@ -4,6 +4,8 @@ This is a simple toy VM built in C. Idea and starting point are from https://en.
 
 How to use:
 > gcc -o main main.cpp
+
+
 > ./main <filename>.bin
 
 Ensure the bin file is assembled properly to assure proper operation.
