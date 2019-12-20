@@ -6,7 +6,7 @@ How to use:
 > gcc -o main main.cpp
 
 
-> ./main <filename>.bin
+> ./main filename.bin
 
 Ensure the bin file is assembled properly to assure proper operation.
 
