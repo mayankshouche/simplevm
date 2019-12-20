@@ -13,6 +13,7 @@ Ensure the bin file is assembled properly to assure proper operation.
 Assembly/Machine Language Reference:
 
 Opcodes: 
+
 0) halt: 0x000
 
    halts operation of the system.
