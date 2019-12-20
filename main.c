@@ -12,10 +12,11 @@
 #include <math.h>
 
 #define NUM_REGS 4
+#define READ_SZ 255
 
 unsigned int regs[NUM_REGS];
 int pc = 0;
-unsigned int program[];
+unsigned int program[] = {0x1064, 0x11C8, 0x2201, 0x0000};
 
 int opcode = 0;
 int reg1 = 0;
@@ -23,12 +24,40 @@ int reg2 = 0;
 int reg3 = 0;
 int immediate = 0;
 
+bool status = true; //VM runs until status flag turns to zero
+
 int fetch(void);
 void getProgram(char* filename, unsigned int* program);
+void decodeInstruction(int instruction);
+void showRegs(void);
 
 int main(int argc, char* argv[])
 {
-	getProgram(argv[1], program);
+	//getProgram(argv[1], program);
+
+	while (status)
+	{
+		decodeInstruction(fetch());
+		switch(opcode)
+		{
+			case 0:
+				printf("halt\n");
+				status = false;
+				break;
+
+			case 1:
+				print("loadi r%d #%d\n", reg1, immediate);
+				regs[reg1] = immediate;
+				break;
+
+			case 2:
+				print("add r%d r%d r%d", reg1, reg2, reg3);
+				regs[reg1] = regs[reg2] + regs[reg3];
+				break;
+		}
+		showRegs();
+	}
+
 
 }
 
@@ -41,12 +70,26 @@ void getProgram(char* filename, unsigned int* program)
 {
 	FILE* fp;
 	fp = fopen(filename, "r");
-	char* buffer[255];
+	char* buffer[READ_SZ];
 	int index = 0;
 
-	while (fgets(buffer, 255, fp))
+	while (fgets(buffer, READ_SZ, fp))
 	{
 		program[index] = malloc(sizeof(unsigned int)); //allocate space for each instruction read in
-		program[index++] = strtol(buffer, NULL, 16); //convert the string values from the file to hex ints
+		program[index++] = strtol(buffer, NULL, 16);   //convert the string values from the file to hex ints
 	}
+}
+
+void decodeInstruction(int instruction)
+{
+	opcode = (instruction & 0xF000 ) >> 12; //get first byte of instruction
+	reg1 = (instruction & 0x0F00) >> 8;     //second byte
+	reg2 = (instruction & 0x00F0) >> 4;     //third byte
+	reg3 = (instruction & 0x000F);			//fourth...
+	immediate = (instruction & 0x00FF);		//lower half
+}
+
+void showRegs(void)
+{
+	printf("reg0 = %d\nreg1 = %d\nreg2 = %d\nreg3 = %d\n", regs[0], regs[1], regs[2], regs[3]);
 }
